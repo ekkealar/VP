@@ -7,17 +7,45 @@
 	if($hourNow < 6){
 		$partOfDay = "Uneaeg";
 	}
+
+    if($hourNow == 7){
+        $partOfDay = "Hommikusoogi aeg";
+    }
+
+    if($hourNow == 17){
+        $partOfDay = "ohtusoogi aeg";
+    }
 	
-	if($hourNow >= 8 and $hourNow <= 18){
+	if($hourNow >= 8 and $hourNow <= 16){
 		$partOfDay = "Õppimise aeg";
 	}
+
+    if($hourNow >= 18 and $hourNow <= 20){
+        $partOfDay = "Puhke aeg";
+    }
+
 	//vaatame semestri kulgemist
 	$semesterStart = new DateTime("2020-8-31");
 	$semesterEnd = new DateTime("2020-12-13");
 	$semesterDuration = $semesterStart->diff($semesterEnd);
 	$semesterDurationDays = $semesterDuration->format("%r%a");
 	$today = new DateTime("now");
+
+    $semesterKestvus = $semesterStart->diff($today);
+    $semesterKestvusDays = $semesterKestvus->format("%r%a");
+
+    $semesterStatus = "on";
+
+    if($semesterKestvusDays > 0){
+        $semesterStatus = "Semester on kaimas";
+    } else {
+        $semesterStatus = "Semester ei ole veel kaimas";
+    }
 	
+    $semesterEndDays = $semesterDurationDays - $semesterKestvusDays;
+
+    $semesterProtsent = $semesterDurationDays / 100 * $semesterKestvusDays;
+    
 ?>
 
 <!DOCTYPE html>
@@ -32,40 +60,18 @@
 </head>
 
 <body>
-    <div id="container">
-            <div id="menu">
-                <ul>
-                    <li><a href="#">MENULINK1</a></li>
-                    <li><a href="#">MENULINK2</a></li>
-                    <li><a href="#">MENULINK3</a></li>
-                </ul>
-            </div>
-        </div>
-        <div id="content">
-            <h2><?php echo $username; ?></h2>
-			<p>Lehe avamise hetk: <?php echo $fullTimeNow; ?></p>
-			<p><?php echo "Praegu on " .$partOfDay .".";?></p>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-        </div>
-        <div id="content2">
-            <h4>LOREM</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <h4>LOREM</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-        </div>
-        <div id="footer">
-            <ul>
-                <li><a href="#">FOOTERLINK1</a></li>
-                <li><a href="#">FOOTERLINK2</a></li>
-                <li><a href="#">FOOTERLINK3</a></li>
-            </ul>
-        </div>
+    <div id="content">
+        <h2><?php echo $username; ?></h2>
+        <p>Lehe avamise hetk: <?php echo $fullTimeNow; ?></p>
+        <p><?php echo "Praegu on " .$partOfDay .".";?></p>
+        <p>Semester kestab <?php echo $semesterDurationDays; ?> paeva</p>
+        <p><?php echo $semesterStatus; ?></p>
+        <p>Semester on kestnud <?php echo $semesterKestvusDays; ?> paeva</p>
+        <p>Semester kestab veel <?php echo $semesterEndDays; ?> paeva</p>
+        <p>oppetoost on <?php echo $semesterProtsent; ?>% tehtud</p>
+        
+
+    </div>
     </div>
 </body>
 
